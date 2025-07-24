@@ -11,7 +11,7 @@ const moods = [
 ];
 
 // JournalEntryForm component for creating or editing journal entries
-const JournalEntryForm = ({ onSubmit, initialData = {} }) => {
+const EntryForm = ({ onSubmit, initialData = {} }) => {
   // State to manage all form data
   const [entryData, setEntryData] = useState({
     title: '',
@@ -329,4 +329,4 @@ const JournalEntryForm = ({ onSubmit, initialData = {} }) => {
   );
 };
 
-export default JournalEntryForm;
+export default EntryForm;
