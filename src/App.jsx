@@ -19,6 +19,8 @@ import Settings from './pages/Settings'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import NotFound from './pages/NotFound'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth()
   
@@ -46,6 +48,8 @@ function App() {
       <Route path="/" element={<AuthLayout />}>
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        <Route path="forgot-password" element={<ForgotPassword/>}/>
+        <Route path="reset-password" element={<ResetPassword/>}/>
       </Route>
       
       {/* Protected routes */}
