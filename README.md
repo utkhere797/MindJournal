@@ -2,9 +2,7 @@
 
 **MindJournal** is a fully responsive and modern web application built with **React.js** and **Vite**, designed to help users log their thoughts, track daily moods, and gain insights into their mental well-being.
 
-<p align="right"><a href="#-table-of-contents">⬆️ Back to Top</a></p>
 
----
 
 ## 📚 Table of Contents
 
@@ -39,7 +37,7 @@
   - Modular structure and reusable components  
 - **Routing**: Smooth navigation via **React Router**
 
-<p align="right"><a href="#-table-of-contents">⬆️ Back to Top</a></p>
+
 
 ---
 
@@ -51,8 +49,6 @@
 - **Routing**: React Router
 - **Charts**: Recharts
 - **Icons**: React Icons
-
-<p align="right"><a href="#-table-of-contents">⬆️ Back to Top</a></p>
 
 ---
 
@@ -74,8 +70,6 @@ npm run dev
 
 Visit `http://localhost:5173` in your browser.
 
-<p align="right"><a href="#-table-of-contents">⬆️ Back to Top</a></p>
-
 ---
 
 ## 📖 Usage
@@ -85,8 +79,6 @@ Visit `http://localhost:5173` in your browser.
 * Navigate to the calendar to see or edit past logs.
 * Head to the **Insights** page to visualize mood trends.
 * Switch between light/dark themes from the **Settings** tab.
-
-<p align="right"><a href="#-table-of-contents">⬆️ Back to Top</a></p>
 
 ---
 
@@ -110,8 +102,6 @@ MindJournal/
 └── README.md
 ```
 
-<p align="right"><a href="#-table-of-contents">⬆️ Back to Top</a></p>
-
 ---
 
 ## 📸 Demo
@@ -120,7 +110,6 @@ MindJournal/
 
 ![App Preview](public/demo-screenshot.png)
 
-<p align="right"><a href="#-table-of-contents">⬆️ Back to Top</a></p>
 
 ---
 
@@ -139,7 +128,6 @@ We welcome all kinds of contributions!
 
 Please refer to our [CONTRIBUTION.md](CONTRIBUTION.md) for detailed guidelines.
 
-<p align="right"><a href="#-table-of-contents">⬆️ Back to Top</a></p>
 
 ---
 
@@ -147,8 +135,6 @@ Please refer to our [CONTRIBUTION.md](CONTRIBUTION.md) for detailed guidelines.
 
 This project is licensed under the [MIT License](LICENSE).
 You’re free to use, modify, and share under the license terms.
-
-<p align="right"><a href="#-table-of-contents">⬆️ Back to Top</a></p>
 
 ---
 
@@ -158,7 +144,10 @@ You’re free to use, modify, and share under the license terms.
 * Built using open-source tools and love 💖
 * Thanks to the developer community!
 
-<p align="right"><a href="#-table-of-contents">⬆️ Back to Top</a></p>
-```
+<p align="center">
+  <a href="#top" style="font-size: 18px; padding: 8px 16px; display: inline-block; border: 1px solid #ccc; border-radius: 6px; text-decoration: none;">
+    ⬆️ Back to Top
+  </a>
+</p>
 
 ---
