@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { FiUser, FiMail, FiLock } from 'react-icons/fi'
+import { GoogleLogin } from '@react-oauth/google';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +14,7 @@ const Register = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   
-  const { register } = useAuth()
+  const { register, loginWithGoogle } = useAuth()
   
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -149,6 +150,19 @@ const Register = () => {
           {loading ? 'Creating account...' : 'Create account'}
         </button>
       </form>
+
+      <div className="mt-4 text-center">
+        <p className="text-sm text-neutral-600 dark:text-neutral-400">or</p>
+      </div>
+
+      <div className="mt-4 flex justify-center">
+        <GoogleLogin
+          onSuccess={loginWithGoogle}
+          onError={() => {
+            setError('Google login failed. Please try again.');
+          }}
+        />
+      </div>
       
       <div className="mt-6 text-center text-sm text-neutral-600 dark:text-neutral-400">
         Already have an account?{' '}
