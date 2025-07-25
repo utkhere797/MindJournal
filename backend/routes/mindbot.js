@@ -10,7 +10,7 @@ router.post('/mindbot', async (req, res) => {
     const response = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
       {
-        model: 'moonshotai/kimi-k2:free', // adjust to your preferred model
+        model: 'tngtech/deepseek-r1t2-chimera:free', // adjust to your preferred model
         messages: [
           { role: 'system', content: 'You are MindBot-AI, an empathetic mental health assistant.' },
           { role: 'user', content: userMessage }
