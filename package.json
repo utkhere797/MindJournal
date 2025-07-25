@@ -47,5 +47,8 @@
   "main": "eslint.config.js",
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "overrides": {
+    "rollup": "4.18.0"
+  }
 }
