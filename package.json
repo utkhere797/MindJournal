@@ -17,7 +17,6 @@
     "express": "^5.1.0",
     "framer-motion": "^12.23.6",
     "lucide-react": "^0.525.0",
-
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
@@ -38,5 +37,10 @@
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
     "vite": "^5.4.2"
-  }
+  },
+  "description": "**MindJournal** is a fully responsive and modern web application built with **React.js** and **Vite**, designed to help users log their thoughts, track daily moods, and gain insights into their mental well-being.",
+  "main": "eslint.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
