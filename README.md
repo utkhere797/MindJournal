@@ -110,6 +110,7 @@ Visit `http://localhost:5173` in your browser.
 
 ```bash
 MindJournal/
+├── Backend
 ├── public/               # Static files
 ├── src/
 │   ├── components/       # Reusable components

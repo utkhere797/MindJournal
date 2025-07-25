@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { FiUser, FiLock } from 'react-icons/fi'
+import { GoogleLogin } from '@react-oauth/google';
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -9,7 +10,7 @@ const Login = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   
-  const { login } = useAuth()
+  const { login, loginWithGoogle } = useAuth()
   
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -105,6 +106,19 @@ const Login = () => {
           {loading ? "Signing in..." : "Sign in"}
         </button>
       </form>
+
+      <div className="mt-4 text-center">
+        <p className="text-sm text-neutral-600 dark:text-neutral-400">or</p>
+      </div>
+
+      <div className="mt-4 flex justify-center">
+        <GoogleLogin
+          onSuccess={loginWithGoogle}
+          onError={() => {
+            setError('Google login failed. Please try again.');
+          }}
+        />
+      </div>
 
       <div className="mt-6 text-center text-sm text-neutral-600 dark:text-neutral-400">
         Don't have an account?{" "}
