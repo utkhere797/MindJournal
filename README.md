@@ -72,23 +72,10 @@
 - **State Management**: Context API, React Hooks  
 - **Routing**: React Router  
 - **Charts**: Recharts  
-
-- **Frontend**: React.js, Vite
-- **Styling**: Tailwind CSS
-- **State Management**: Context API, React Hooks
-- **Routing**: React Router
-- **Charts**: Recharts
-
 - **Icons**: React Icons
+- **Backend**: Node.js, Express.js
 
----
 
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).  
-You’re free to use, modify, and share this software under the license terms.
-=======
 ## 💻 Installation
 
 ### Prerequisites
