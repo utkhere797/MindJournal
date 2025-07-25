@@ -124,7 +124,7 @@ const EntryDetail = () => {
           {entry.images && entry.images.length > 0 && (
             <div className="mt-6">
               <h3 className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                Attached Images:
+                Attachments:
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 {entry.images.map((image, index) => (
