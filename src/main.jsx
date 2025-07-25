@@ -10,7 +10,7 @@ import './index.css'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <GoogleOAuthProvider clientId="124095649532-s58pggt5pfrvrndntd66r4pviifefrau.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
         <AuthProvider>
           <ThemeProvider>
             <App />
