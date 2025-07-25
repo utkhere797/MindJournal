@@ -2,14 +2,15 @@ import { Link } from 'react-router-dom'
 import { format } from 'date-fns'
 import { FiEdit2, FiTrash2 } from 'react-icons/fi'
 import MoodIcon from './MoodIcon'
+import { Goal } from 'lucide-react';
 
 const EntryCard = ({ entry, onDelete }) => {
-  const { id, title, content, mood, createdAt, images } = entry
-  
+  const { id, title, content, mood, createdAt, images, micro_goals } = entry
+
   const formattedDate = format(new Date(createdAt), 'PPP')
-  
-  const truncatedContent = content.length > 150 
-    ? `${content.substring(0, 150)}...` 
+
+  const truncatedContent = content.length > 150
+    ? `${content.substring(0, 150)}...`
     : content
 
   return (
@@ -26,8 +27,17 @@ const EntryCard = ({ entry, onDelete }) => {
 
         {/* Show number of image attachments if they exist */}
         {images && images.length > 0 && (
-          <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-3">
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-1">
             📎 {images.length} attachment{images.length > 1 ? 's' : ''}
+          </p>
+        )}
+
+        {/* Show number of micro goals if they exist */}
+        {micro_goals && micro_goals.length > 0 && (
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-3">
+            <span className="flex items-center gap-2">
+              <Goal className='h-4 w-4' />{micro_goals.length} Goal{micro_goals.length > 1 ? 's' : ''}
+            </span>
           </p>
         )}
 
@@ -36,7 +46,7 @@ const EntryCard = ({ entry, onDelete }) => {
         </p>
 
         <div className="flex justify-between items-center pt-2 border-t border-neutral-200 dark:border-neutral-700">
-          <Link 
+          <Link
             to={`/journal/${id}`}
             className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium"
           >
