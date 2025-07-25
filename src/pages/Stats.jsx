@@ -1,0 +1,360 @@
+import { useState, useMemo } from 'react'
+import { useJournal } from '../contexts/JournalContext'
+import { useTheme } from '../contexts/ThemeContext'
+import { Pie, Bar } from 'react-chartjs-2'
+import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth, parseISO } from 'date-fns'
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  PointElement,
+  LineElement
+} from 'chart.js'
+
+// Register ChartJS components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  PointElement,
+  LineElement
+)
+
+const Stats = () => {
+  const { entries } = useJournal()
+  const { theme } = useTheme()
+  const [timeRange, setTimeRange] = useState('month')
+  
+  const filteredEntries = useMemo(() => {
+    if (entries.length === 0) return []
+    
+    const now = new Date()
+    let startDate
+    
+    if (timeRange === 'week') {
+      startDate = startOfWeek(now, { weekStartsOn: 0 })
+    } else if (timeRange === 'month') {
+      startDate = startOfMonth(now)
+    } else {
+      return entries // 'all' time range
+    }
+    
+    return entries.filter(entry => parseISO(entry.createdAt) >= startDate)
+  }, [entries, timeRange])
+  
+  // Mood distribution
+  const moodData = useMemo(() => {
+    if (filteredEntries.length === 0) return null
+    
+    const moodCounts = {
+      great: 0,
+      good: 0,
+      okay: 0,
+      bad: 0,
+      awful: 0
+    }
+    
+    filteredEntries.forEach(entry => {
+      if (entry.mood) {
+        moodCounts[entry.mood]++
+      }
+    })
+    
+    const backgroundColor = [
+      'rgba(34, 197, 94, 0.8)',  // green for great
+      'rgba(59, 130, 246, 0.8)',  // blue for good
+      'rgba(234, 179, 8, 0.8)',   // yellow for okay
+      'rgba(249, 115, 22, 0.8)',  // orange for bad
+      'rgba(239, 68, 68, 0.8)'    // red for awful
+    ]
+    
+    const borderColor = [
+      'rgba(22, 163, 74, 1)',
+      'rgba(37, 99, 235, 1)',
+      'rgba(202, 138, 4, 1)', 
+      'rgba(234, 88, 12, 1)',
+      'rgba(220, 38, 38, 1)'
+    ]
+    
+    return {
+      labels: ['Great', 'Good', 'Okay', 'Bad', 'Awful'],
+      datasets: [
+        {
+          data: [moodCounts.great, moodCounts.good, moodCounts.okay, moodCounts.bad, moodCounts.awful],
+          backgroundColor,
+          borderColor,
+          borderWidth: 1
+        }
+      ]
+    }
+  }, [filteredEntries])
+  
+  // Activity distribution
+  const activityData = useMemo(() => {
+    if (filteredEntries.length === 0) return null
+    
+    // Count activity occurrences
+    const activityCounts = {}
+    
+    filteredEntries.forEach(entry => {
+      if (entry.activities && entry.activities.length) {
+        entry.activities.forEach(activity => {
+          if (!activityCounts[activity]) {
+            activityCounts[activity] = 0
+          }
+          activityCounts[activity]++
+        })
+      }
+    })
+    
+    // Sort activities by frequency and take top 10
+    const sortedActivities = Object.entries(activityCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+    
+    const labels = sortedActivities.map(([activity]) => activity)
+    const data = sortedActivities.map(([, count]) => count)
+    
+    return {
+      labels,
+      datasets: [
+        {
+          label: 'Activity Frequency',
+          data,
+          backgroundColor: 'rgba(139, 92, 246, 0.7)',
+          borderColor: 'rgba(109, 40, 217, 1)',
+          borderWidth: 1,
+          borderRadius: 4
+        }
+      ]
+    }
+  }, [filteredEntries])
+  
+  const pieOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'right',
+        labels: {
+          color: theme === 'dark' ? '#e5e5e5' : '#262626',
+          font: {
+            size: 12
+          }
+        }
+      },
+      title: {
+        display: true,
+        text: 'Mood Distribution',
+        color: theme === 'dark' ? '#e5e5e5' : '#262626',
+        font: {
+          size: 16,
+          weight: 'bold',
+        },
+      },
+    }
+  }
+  
+  const barOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        text: 'Top Activities',
+        color: theme === 'dark' ? '#e5e5e5' : '#262626',
+        font: {
+          size: 16,
+          weight: 'bold',
+        },
+      },
+    },
+    scales: {
+      y: {
+        ticks: {
+          color: theme === 'dark' ? '#a3a3a3' : '#525252',
+        },
+        grid: {
+          display: false,
+        },
+      },
+      x: {
+        beginAtZero: true,
+        ticks: {
+          color: theme === 'dark' ? '#a3a3a3' : '#525252',
+          precision: 0,
+        },
+        grid: {
+          color: theme === 'dark' ? 'rgba(64, 64, 64, 0.5)' : 'rgba(229, 229, 229, 0.5)',
+        }
+      }
+    }
+  }
+  
+  return (
+    <div className="space-y-6 animate-fadeIn">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <h1 className="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white">
+          Insights
+        </h1>
+        
+        <div className="inline-flex rounded-md shadow-sm" role="group">
+          <button
+            onClick={() => setTimeRange('week')}
+            className={`px-4 py-2 text-sm font-medium rounded-l-md border ${
+              timeRange === 'week'
+                ? 'bg-primary-600 text-white border-primary-600'
+                : 'bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border-neutral-300 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-750'
+            }`}
+          >
+            This Week
+          </button>
+          <button
+            onClick={() => setTimeRange('month')}
+            className={`px-4 py-2 text-sm font-medium border-t border-b ${
+              timeRange === 'month'
+                ? 'bg-primary-600 text-white border-primary-600'
+                : 'bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border-neutral-300 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-750'
+            }`}
+          >
+            This Month
+          </button>
+          <button
+            onClick={() => setTimeRange('all')}
+            className={`px-4 py-2 text-sm font-medium rounded-r-md border ${
+              timeRange === 'all'
+                ? 'bg-primary-600 text-white border-primary-600'
+                : 'bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border-neutral-300 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-750'
+            }`}
+          >
+            All Time
+          </button>
+        </div>
+      </div>
+      
+      {filteredEntries.length === 0 ? (
+        <div className="card p-8 text-center">
+          <h2 className="text-lg font-medium text-neutral-800 dark:text-white mb-2">
+            No data available
+          </h2>
+          <p className="text-neutral-600 dark:text-neutral-400">
+            There are no journal entries for the selected time period.
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card p-4 h-[300px]">
+            {moodData && <Pie data={moodData} options={pieOptions} />}
+          </div>
+          
+          <div className="card p-4 h-[300px]">
+            {activityData ? (
+              <Bar data={activityData} options={barOptions} />
+            ) : (
+              <div className="h-full flex items-center justify-center">
+                <p className="text-neutral-500 dark:text-neutral-400">
+                  No activity data available
+                </p>
+              </div>
+            )}
+          </div>
+          
+          <div className="card p-6 lg:col-span-2">
+            <h2 className="text-lg font-medium mb-4">Journal Stats</h2>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
+                <div className="text-sm text-neutral-600 dark:text-neutral-400">Total Entries</div>
+                <div className="text-3xl font-semibold text-primary-700 dark:text-primary-400">{filteredEntries.length}</div>
+              </div>
+              
+              <div className="p-4 bg-secondary-50 dark:bg-secondary-900/20 rounded-lg">
+                <div className="text-sm text-neutral-600 dark:text-neutral-400">Average Mood</div>
+                <div className="text-3xl font-semibold text-secondary-700 dark:text-secondary-400">
+                  {filteredEntries.some(e => e.mood) 
+                    ? (() => {
+                        const moodScore = {
+                          'great': 5,
+                          'good': 4,
+                          'okay': 3,
+                          'bad': 2,
+                          'awful': 1
+                        }
+                        const entriesWithMood = filteredEntries.filter(e => e.mood)
+                        const average = entriesWithMood.reduce((sum, entry) => sum + moodScore[entry.mood], 0) / entriesWithMood.length
+                        
+                        if (average >= 4.5) return 'Great'
+                        if (average >= 3.5) return 'Good'
+                        if (average >= 2.5) return 'Okay'
+                        if (average >= 1.5) return 'Bad'
+                        return 'Awful'
+                      })() 
+                    : 'N/A'
+                  }
+                </div>
+              </div>
+              
+              <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <div className="text-sm text-neutral-600 dark:text-neutral-400">Most Common Mood</div>
+                <div className="text-3xl font-semibold text-green-700 dark:text-green-400">
+                  {filteredEntries.some(e => e.mood)
+                    ? (() => {
+                        const moodCounts = filteredEntries.reduce((acc, entry) => {
+                          if (entry.mood) {
+                            acc[entry.mood] = (acc[entry.mood] || 0) + 1
+                          }
+                          return acc
+                        }, {})
+                        
+                        return Object.entries(moodCounts)
+                          .sort((a, b) => b[1] - a[1])[0][0]
+                          .charAt(0).toUpperCase() + 
+                          Object.entries(moodCounts)
+                            .sort((a, b) => b[1] - a[1])[0][0]
+                            .slice(1)
+                      })()
+                    : 'N/A'
+                  }
+                </div>
+              </div>
+              
+              <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+                <div className="text-sm text-neutral-600 dark:text-neutral-400">Most Active Day</div>
+                <div className="text-3xl font-semibold text-yellow-700 dark:text-yellow-400">
+                  {filteredEntries.length > 0
+                    ? (() => {
+                        const dayCounts = filteredEntries.reduce((acc, entry) => {
+                          const day = format(parseISO(entry.createdAt), 'EEEE')
+                          acc[day] = (acc[day] || 0) + 1
+                          return acc
+                        }, {})
+                        
+                        return Object.entries(dayCounts)
+                          .sort((a, b) => b[1] - a[1])[0][0]
+                      })()
+                    : 'N/A'
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default Stats

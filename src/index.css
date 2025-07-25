@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Moon+Dance&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+  
+  body {
+    @apply font-sans bg-neutral-50 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-100 transition-colors duration-300;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white focus:ring-primary-500;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary-600 hover:bg-secondary-700 text-white focus:ring-secondary-500;
+  }
+
+  .btn-outline {
+    @apply border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:ring-primary-500;
+  }
+
+  .input {
+    @apply block w-full px-4 py-2 border border-neutral-300 dark:border-neutral-700 rounded-lg 
+           bg-white dark:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-primary-500 
+           focus:border-transparent transition-all duration-200;
+  }
+
+  .card {
+    @apply bg-white dark:bg-neutral-800 rounded-lg shadow-soft dark:shadow-none border border-neutral-200 dark:border-neutral-700;
+  }
+}
+.moon-dance-regular {
+  font-family: "Moon Dance", cursive;
+  font-weight: 600;
+  font-style: normal;
+}
+
+
