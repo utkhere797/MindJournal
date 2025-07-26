@@ -1,5 +1,5 @@
-import { useState, useEffect,useRef } from 'react';
-import { Check, Smile, Meh, Frown, UploadCloud, XCircle, Loader2 } from 'lucide-react'; // Switched to lucide-react for different icons
+import { useState, useEffect, useRef } from 'react';
+import { Check, Smile, Meh, Frown, UploadCloud, XCircle, Loader2, Trash2 } from 'lucide-react'; // Switched to lucide-react for different icons
 import { FaRunning, FaBookOpen, FaPrayingHands, FaBriefcase, FaUsers } from 'react-icons/fa';
 import { marked } from "marked";
 import DOMPurify from "dompurify";
@@ -22,6 +22,7 @@ const EntryForm = ({ onSubmit, initialData = {} }) => {
     mood: '',
     activities: [],
     images: [], // Stores File objects for new uploads and URLs for existing images
+    micro_goals: [],
     ...initialData
   });
 
@@ -29,18 +30,19 @@ const EntryForm = ({ onSubmit, initialData = {} }) => {
   const [newActivityInput, setNewActivityInput] = useState('');
   // State to store image preview URLs (for display)
   const [imagePreviews, setImagePreviews] = useState(initialData.images || []);
+  const [microGoalPreview, setMicroGoalPreview] = useState('');
   // State for loading indicator during form submission (especially image upload)
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Common activities for quick selection
-  
+
   const commonActivities = [
-  { label: 'Exercise', icon: <FaRunning className="text-red-500" /> },
-  { label: 'Reading', icon: <FaBookOpen className="text-blue-500" /> },
-  { label: 'Meditation', icon: <FaPrayingHands className="text-purple-500" /> },
-  { label: 'Work', icon: <FaBriefcase className="text-yellow-500" /> },
-  { label: 'Family', icon: <FaUsers className="text-green-500" /> }
-];
+    { label: 'Exercise', icon: <FaRunning className="text-red-500" /> },
+    { label: 'Reading', icon: <FaBookOpen className="text-blue-500" /> },
+    { label: 'Meditation', icon: <FaPrayingHands className="text-purple-500" /> },
+    { label: 'Work', icon: <FaBriefcase className="text-yellow-500" /> },
+    { label: 'Family', icon: <FaUsers className="text-green-500" /> }
+  ];
 
 
   // Handles changes for text input fields (title, content)
@@ -77,6 +79,43 @@ const EntryForm = ({ onSubmit, initialData = {} }) => {
       setNewActivityInput(''); // Clear the input field
     }
   };
+
+  // Adds a new goal to the list
+  const addMicroGoal = () => {
+    if (microGoalPreview.trim() && !entryData.micro_goals.includes(microGoalPreview.trim())) {
+      setEntryData(prev => ({
+        ...prev,
+        micro_goals: [
+          ...(prev.micro_goals || []),
+          {
+            text: microGoalPreview.trim(),
+            is_completed: false
+          }
+        ]
+      }));
+      setMicroGoalPreview(''); // Clear the input field
+    }
+  };
+
+  const removeMicroGoal = (index) => {
+    setEntryData(prev => {
+      const newMicroGoals = prev.micro_goals.filter((goal, i) => i !== index);
+      return { ...prev, micro_goals: newMicroGoals };
+    });
+  };
+
+  const toggleMicroGoalCompletion = (index) => {
+    setEntryData(prev => {
+      const newMicroGoals = prev.micro_goals.map((goal, i) => {
+        if (i === index) {
+          return { ...goal, is_completed: !goal.is_completed };
+        }
+        return goal;
+      });
+      return { ...prev, micro_goals: newMicroGoals };
+    });
+  };
+
 
   // Handles image file selection
   const handleImageFileChange = (e) => {
@@ -163,7 +202,7 @@ const EntryForm = ({ onSubmit, initialData = {} }) => {
     setIsSubmitting(false); // Reset loading state
   };
 
-  
+
   return (
     <form onSubmit={handleSubmit} className="space-y-8 p-8 bg-white/90 dark:bg-neutral-900/80 backdrop-blur-md rounded-2xl shadow-2xl">
       {/* Title Input */}
@@ -194,11 +233,10 @@ const EntryForm = ({ onSubmit, initialData = {} }) => {
               key={mood.id}
               type="button"
               onClick={() => handleMoodSelection(mood.id)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-200 ease-in-out text-sm font-medium ${
-                entryData.mood === mood.id
+              className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-200 ease-in-out text-sm font-medium ${entryData.mood === mood.id
                   ? mood.color + ' ring-2 ring-offset-2 ring-primary-500 dark:ring-offset-neutral-900 shadow-md'
                   : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'
-              }`}
+                }`}
             >
               <span>{mood.icon}</span>
               <span>{mood.label}</span>
@@ -209,39 +247,38 @@ const EntryForm = ({ onSubmit, initialData = {} }) => {
       </div>
 
       {/* Activities Section */}
-<div>
-  <label className="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
-    Activities (optional)
-  </label>
-  <div className="flex flex-wrap gap-2 mb-3">
-    {commonActivities.map(({ label, icon }) => {
-      const isSelected = entryData.activities?.includes(label); // ✅ Define it here
+      <div>
+        <label className="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
+          Activities (optional)
+        </label>
+        <div className="flex flex-wrap gap-2 mb-3">
+          {commonActivities.map(({ label, icon }) => {
+            const isSelected = entryData.activities?.includes(label); // ✅ Define it here
 
-      return (
-        <button
-          key={label}
-          type="button"
-          onClick={() => toggleActivitySelection(label)}
-          className={`flex items-center gap-2 px-4 py-2 text-sm rounded-full border transition-all duration-200
-            ${
-              isSelected
-                ? 'bg-primary-100/50 text-primary-800 dark:bg-primary-900/30 dark:text-primary-200 ring-2 ring-primary-400 dark:ring-primary-600 border-primary-400 shadow-sm'
-                : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 border-neutral-300 dark:border-neutral-700'
-            }
+            return (
+              <button
+                key={label}
+                type="button"
+                onClick={() => toggleActivitySelection(label)}
+                className={`flex items-center gap-2 px-4 py-2 text-sm rounded-full border transition-all duration-200
+            ${isSelected
+                    ? 'bg-primary-100/50 text-primary-800 dark:bg-primary-900/30 dark:text-primary-200 ring-2 ring-primary-400 dark:ring-primary-600 border-primary-400 shadow-sm'
+                    : 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 border-neutral-300 dark:border-neutral-700'
+                  }
           `}
-        >
-          {icon}
-          <span>{label}</span>
-          {isSelected && <span className="ml-1 text-green-500">✅</span>}
-        </button>
-      );
-    })}
-  
+              >
+                {icon}
+                <span>{label}</span>
+                {isSelected && <span className="ml-1 text-green-500">✅</span>}
+              </button>
+            );
+          })}
+
 
 
           {/* Render custom activities already added */}
-     
-      {entryData.activities?.filter(a => !commonActivities.includes(a)).map(activity => (
+
+          {entryData.activities?.filter(a => !commonActivities.includes(a)).map(activity => (
             <button
               key={activity}
               type="button"
@@ -251,7 +288,7 @@ const EntryForm = ({ onSubmit, initialData = {} }) => {
               {activity}
             </button>
           ))}
-      
+
 
         </div>
 
@@ -261,23 +298,85 @@ const EntryForm = ({ onSubmit, initialData = {} }) => {
             type="text"
             value={newActivityInput}
             onChange={(e) => setNewActivityInput(e.target.value)}
-            className="flex-1 px-4 py-2 border border-neutral-300 dark:border-neutral-700 rounded-l-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-500 transition-colors duration-200"
+            className="flex-1 px-4 py-2 border border-neutral-300 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-500 transition-colors duration-200"
             placeholder="Add a new activity (e.g., 'Gardening')"
           />
           <button
             type="button"
             onClick={addCustomActivity}
             disabled={!newActivityInput.trim()}
-           className={`px-5 py-2 font-medium text-sm rounded-lg 
+            className={`px-5 py-2 font-medium text-sm rounded-lg 
     text-white bg-primary-600 
     hover:bg-primary-700 active:scale-95 
     focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 
     dark:focus:ring-offset-neutral-900 
     transition-all duration-200 
-    disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none shadow-md`}       
-    >
+    disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none shadow-md`}
+          >
             ➕ Add
           </button>
+        </div>
+      </div>
+
+      {/* micro goals section */}
+      <div>
+        <label className="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
+          Goals (optional)
+        </label>
+
+        {/* Goal Input */}
+        <div className="flex rounded-lg shadow-sm">
+          <input
+            type="text"
+            value={microGoalPreview}
+            onChange={(e) => setMicroGoalPreview(e.target.value)}
+            className="flex-1 px-4 py-2 border border-neutral-300 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-500 transition-colors duration-200"
+            placeholder="Add new Goal (e.g., Sleep before 11 PM, Deploy personal project to Vercel)"
+          />
+          <button
+            type="button"
+            onClick={addMicroGoal}
+            className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-neutral-900 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={!microGoalPreview.trim()}
+          >
+           ➕ Add
+          </button>
+        </div>
+
+        {/* Render micro goals already added */}
+        <div className="flex flex-col gap-2 m-3">
+          {entryData.micro_goals?.map((goal, index) => (
+            <div key={index} className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div
+                  onClick={() => toggleMicroGoalCompletion(index)}
+                  className={`w-4 h-4 cursor-pointer rounded border-2 flex items-center justify-center transition-colors duration-200 ${goal.is_completed
+                    ? 'bg-primary-600 border-primary-600 dark:bg-primary-500 dark:border-primary-500'
+                    : 'bg-white dark:bg-neutral-700 border-gray-300 dark:border-gray-500 hover:border-primary-400 dark:hover:border-primary-400'
+                    }`}
+                >
+                  {goal.is_completed && <Check strokeWidth={5} className="w-4 h-4 font-bold text-white" />}
+                </div>
+
+                <span
+                  className={`text-md ${goal.is_completed
+                    ? "line-through text-gray-400"
+                    : "text-neutral-700 dark:text-neutral-300"
+                    }`}
+
+                >
+                  {goal.text}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => removeMicroGoal(index)}
+                className="text-red-500 hover:underline"
+              >
+                <Trash2 className="w-5 h-5" />
+              </button>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -342,10 +441,10 @@ const EntryForm = ({ onSubmit, initialData = {} }) => {
         />
 
 
-         <div className="mt-4 p-3 border border-neutral-300 dark:border-neutral-700 rounded-md 
+        <div className="mt-4 p-3 border border-neutral-300 dark:border-neutral-700 rounded-md 
       bg-neutral-50 dark:bg-neutral-900 text-sm prose dark:prose-invert max-w-none">
-    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(entryData.content || "")) }} />
-  </div>
+          <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked(entryData.content || "")) }} />
+        </div>
       </div>
 
       {/* Submit Button */}
@@ -364,8 +463,8 @@ const EntryForm = ({ onSubmit, initialData = {} }) => {
           {isSubmitting ? (
             <>
               <Loader2 className="h-5 w-5 animate-spin" />
-               <span className="animate-pulse">
-              {initialData.id ? 'Saving...' : 'Creating...'}
+              <span className="animate-pulse">
+                {initialData.id ? 'Saving...' : 'Creating...'}
               </span>
             </>
           ) : (
