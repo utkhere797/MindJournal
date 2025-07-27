@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { FiUser, FiLock } from 'react-icons/fi'
+import { FiUser, FiLock, FiEye, FiEyeOff  } from 'react-icons/fi'
 import { GoogleLogin } from '@react-oauth/google';
+
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+
   
   const { login, loginWithGoogle } = useAuth()
   
@@ -80,13 +83,24 @@ const Login = () => {
             </div>
             <input
               id="password"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="input pl-10"
               placeholder="••••••••"
             />
+
+            <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="text-neutral-500 focus:outline-none"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <FiEyeOff /> : <FiEye />}
+              </button>
+            </div>
           </div>
         </div>
         <div className="text-right text-sm">
