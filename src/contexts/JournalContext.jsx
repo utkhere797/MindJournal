@@ -32,10 +32,11 @@ export const JournalProvider = ({ children }) => {
     }
   }, [entries, user, loading])
 
-  const addEntry = (entry) => {
+  const addEntry = (entry, quote = null) => {
     const newEntry = {
       id: Date.now().toString(),
       ...entry,
+      quote,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     }
