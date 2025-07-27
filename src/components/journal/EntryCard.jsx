@@ -48,16 +48,15 @@ const EntryCard = ({ entry, onDelete }) => {
         <div className="flex justify-between items-center pt-2 border-t border-neutral-200 dark:border-neutral-700">
           <Link
             to={`/journal/${id}`}
-            className="text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-600 hover:underline transition-colors duration-200"
+            className="text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-600 hover:underline transition-colors duration-200 flex items-center space-x-1" // Added flex, items-center, and space-x-1
           >
-            Read more
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2"
-              viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+            <span>Read more</span> {/* Wrap text in a span for better control */}
           </Link>
-
-          <div className="flex items-center justify-end gap-2 pt-2 border-t border-neutral-200 dark:border-neutral-700">
+          
+          <div className="flex items-center justify-end gap-2 pt-2">
             <Link
               to={`/journal/${id}/edit`}
               className="group p-2 rounded-md text-neutral-600 dark:text-neutral-400 hover:bg-primary-50 dark:hover:bg-neutral-700 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"

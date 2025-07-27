@@ -208,6 +208,14 @@ const EntryDetail = () => {
           )}
 
 
+          {entry.quote && (
+            <div className="my-6 p-4 bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-500 rounded-r-lg">
+              <p className="italic text-lg text-primary-800 dark:text-primary-200">
+                "{entry.quote}"
+              </p>
+            </div>
+          )}
+
           <div className="prose dark:prose-invert max-w-none">
             <p className="whitespace-pre-line text-neutral-800 dark:text-neutral-200 leading-relaxed">
               {entry.content}

@@ -72,43 +72,46 @@ const Journal = () => {
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-6">
-      {/* Header */}
-      <div className="sticky top-4 z-10 bg-white dark:bg-neutral-900/90 backdrop-blur-lg rounded-xl shadow-sm px-4 py-2 mb-6">
-        <div className='flex flex-wrap justify-between items-center gap-2'>
-          <h1 className="text-2xl font-bold text-neutral-800 dark:text-white">📝 Journal</h1>
-          <p className="text-neutral-600 dark:text-neutral-400 mt-1">
-            {entries.length} {entries.length === 1 ? 'entry' : 'entries'} total
-          </p>
-        </div>
-
-        <div className="flex space-x-2">
-          {/* Filter Toggle */}
-          <button
-            onClick={toggleFilters}
-            className={`btn btn-outline flex items-center space-x-2 rounded-xl shadow-sm transition-all duration-200 ${
-              showFilters || filters.mood.length > 0 || filters.search
-                ? 'bg-primary-50 dark:bg-primary-900/20 border-primary-200 dark:border-primary-700'
-                : 'hover:bg-neutral-100 dark:hover:bg-neutral-800'
-            }`}
-            aria-expanded={showFilters}
-          >
-            <FiFilter size={18} />
-            <span>Filter</span>
-            {(filters.mood.length > 0 || filters.search) && (
-              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary-500 text-white text-xs font-medium">
-                {filters.mood.length + (filters.search ? 1 : 0)}
-              </span>
-            )}
-          </button>
-
-          {/* New Entry */}
-          <Link to="/journal/new" className="btn btn-primary flex items-center space-x-2 rounded-xl ">
-            <FiPlus size={18} />
-            <span>New Entry</span>
-          </Link>
-        </div>
+<div className="max-w-5xl mx-auto px-4 py-6">
+  {/* Header */}
+  <div className="sticky top-4 z-10 bg-white dark:bg-neutral-900/90 backdrop-blur-lg rounded-xl shadow-sm px-4 py-2 mb-6">
+    {/* NEW CONTAINER ADDED HERE */}
+    <div className="flex justify-between items-center flex-wrap gap-4 md:gap-8"> {/* Increased gap here */}
+      <div className='flex flex-wrap justify-between items-center gap-2'> {/* This is your original header-left div */}
+        <h1 className="text-2xl font-bold text-neutral-800 dark:text-white">📝 Journal</h1>
+        <p className="text-neutral-600 dark:text-neutral-400 mt-1">
+          ({entries.length} {entries.length === 1 ? 'entry' : 'entries'} total)
+        </p>
       </div>
+
+      <div className="flex space-x-2"> {/* This is your original header-right div */}
+        {/* Filter Toggle */}
+        <button
+          onClick={toggleFilters}
+          className={`btn btn-outline flex items-center space-x-2 rounded-xl shadow-sm transition-all duration-200 ${
+            showFilters || filters.mood.length > 0 || filters.search
+              ? 'bg-primary-50 dark:bg-primary-900/20 border-primary-200 dark:border-primary-700'
+              : 'hover:bg-neutral-100 dark:hover:bg-neutral-800'
+          }`}
+          aria-expanded={showFilters}
+        >
+          <FiFilter size={18} />
+          <span>Filter</span>
+          {(filters.mood.length > 0 || filters.search) && (
+            <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary-500 text-white text-xs font-medium">
+              {filters.mood.length + (filters.search ? 1 : 0)}
+            </span>
+          )}
+        </button>
+
+        {/* New Entry */}
+        <Link to="/journal/new" className="btn btn-primary flex items-center space-x-2 rounded-xl ">
+          <FiPlus size={18} />
+          <span>New Entry</span>
+        </Link>
+      </div>
+    </div> {/* END OF NEW CONTAINER */}
+  </div>
 
       {/* Filter Panel */}
       <AnimatePresence>
