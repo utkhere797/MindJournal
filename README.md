@@ -44,7 +44,7 @@
 
 ## 🚀 Features
 
-- **User Authentication**: Secure login and registration system using **Context API**
+- **User Authentication**: Secure login and registration system using **GoogleAuth** **Context API**
 - **Dashboard Overview**: Displays journal entries, mood status, and a mood chart
 - **Mood Tracker & Visual Insights**:
   - Emoji-based daily mood logging  
