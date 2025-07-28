@@ -48,8 +48,11 @@ function MindChat() {
   }
 };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') handleSend();
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSend();
+    }
   };
 
   useEffect(() => {
@@ -86,7 +89,7 @@ function MindChat() {
           placeholder="Type how you feel..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyDown}
           className="flex-1 bg-[#2c2c2c] text-gray-200 rounded-full px-4 py-2 mr-2 outline-none focus:ring focus:border-teal-400"
         />
         <button

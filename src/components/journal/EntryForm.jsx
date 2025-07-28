@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useJournal } from '../../contexts/JournalContext';
 import { Check, Smile, Meh, Frown, UploadCloud, XCircle, Loader2, Trash2 } from 'lucide-react';
 import { FaRunning, FaBookOpen, FaPrayingHands, FaBriefcase, FaUsers } from 'react-icons/fa';
 import { marked } from "marked";
@@ -15,6 +16,7 @@ const moods = [
 ];
 
 const EntryForm = ({ onSubmit, initialData = {} }) => {
+  const { setActiveEntry } = useJournal();
   const [entryData, setEntryData] = useState({
     title: '',
     content: '',
@@ -197,6 +199,10 @@ const EntryForm = ({ onSubmit, initialData = {} }) => {
     setIsModalOpen(false);
     handleSaveEntry(generatedQuote);
   };
+
+  useEffect(() => {
+    setActiveEntry(entryData);
+  }, [entryData, setActiveEntry]);
 
   return (
     <>
