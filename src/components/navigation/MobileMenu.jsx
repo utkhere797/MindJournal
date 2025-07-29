@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
-import { FiHome, FiBook, FiCalendar, FiPieChart, FiSettings, FiLogOut } from 'react-icons/fi'
+import { FiHome, FiBook, FiCalendar, FiPieChart, FiSettings, FiLogOut, FiCheckCircle } from 'react-icons/fi'
 
 const MobileMenu = ({ onClose }) => {
   const { user, logout } = useAuth()
