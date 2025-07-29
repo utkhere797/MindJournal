@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom'
+import { Link, useOutletContext } from 'react-router-dom'
 import { format } from 'date-fns'
-import { FiEdit2, FiTrash2 } from 'react-icons/fi'
+import { FiMessageSquare, FiEdit2, FiTrash2 } from 'react-icons/fi'
 import MoodIcon from './MoodIcon'
 import { Goal } from 'lucide-react';
 
