@@ -52,6 +52,18 @@ const EntryForm = ({ onSubmit, initialData = {} }) => {
     setEntryData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleInputTitleChange = (e) => {
+    const { name, value } = e.target;
+    const maxCharRegex = /^.{0,50}$/;
+
+    if (maxCharRegex.test(value)) {
+      setName((prev) => ({ ...prev, [name]: value }));
+            console.log("LIMIT VALID")
+    } else {
+      console.log("LIMIT EXCEED")
+    }
+  };
+
   const handleMoodSelection = (moodId) => {
     setEntryData(prev => ({ ...prev, mood: moodId }));
   };
@@ -237,14 +249,14 @@ const EntryForm = ({ onSubmit, initialData = {} }) => {
         <form onSubmit={handleSubmit} className="space-y-6 p-6 md:p-8 bg-white/90 dark:bg-neutral-900/80 backdrop-blur-md rounded-2xl shadow-2xl">
           <div>
             <label htmlFor="title" className="block text-m font-semibold text-neutral-800 dark:text-neutral-200 mb-3">
-              Entry Title <span className="text-red-500">*</span>
+              Entry Title (MaxLimit: 50) <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               id="title"
               name="title"
               value={entryData.title}
-              onChange={handleInputChange}
+              onChange={handleInputTitleChange}
               required
               className="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none bg-neutral-50 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-500 transition-colors duration-200"
               placeholder="Give your journal entry a title"

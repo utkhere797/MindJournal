@@ -91,6 +91,14 @@ cd MindJournal
 npm install
 npm run dev
 ````
+```
+1. Go to accounts.openrouter.ai and create your api key. 
+
+2. create a file (.env.local), and add these lines for testing your changes: 
+
+OPENROUTER_API_KEY=YOUR_API_KEY
+PORT=5000
+```
 
 Visit `http://localhost:5173` in your browser.
 
