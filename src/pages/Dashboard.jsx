@@ -2,7 +2,8 @@ import { useJournal } from "../contexts/JournalContext";
 import { useAuth } from "../contexts/AuthContext";
 import RecentEntries from "../components/dashboard/RecentEntries";
 import MoodTracker from "../components/dashboard/MoodTracker";
-import MoodChart from "../components/dashboard/MoodChart";
+//import MoodChart from "../components/dashboard/MoodChart";
+import MoodTrendChart from "../components/dashboard/MoodTrendChart";
 import AffirmationBanner from "../components/dashboard/AffirmationBanner";
 import { format } from "date-fns";
 
@@ -68,7 +69,7 @@ const Dashboard = () => {
         <MoodTracker />
       </div>
 
-      <MoodChart />
+      <MoodTrendChart />
 
       <RecentEntries />
     </div>
