@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { FiPlus, FiFilter, FiX } from 'react-icons/fi'
+import { FiPlus, FiFilter, FiX, FiList, FiGrid } from 'react-icons/fi'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useJournal } from '../contexts/JournalContext'
 import EntryCard from '../components/journal/EntryCard'
@@ -16,6 +16,7 @@ const Journal = () => {
     search: '',
   })
   const [showMoodDropdown, setShowMoodDropdown] = useState(false)
+  const [viewMode, setViewMode] = useState('grid');
   const dropdownRef = useRef()
 
   useEffect(() => {
@@ -85,6 +86,23 @@ const Journal = () => {
       </div>
 
       <div className="flex space-x-2"> {/* This is your original header-right div */}
+        {/* ✨ View Toggle Buttons */}
+        <button
+          onClick={() => setViewMode(prev => (prev === 'grid' ? 'list' : 'grid'))}
+          className="btn btn-outline rounded-xl flex items-center space-x-2"
+        >
+          {viewMode === 'grid' ? (
+            <>
+              <FiList size={18} />
+              <span>List View</span>
+            </>
+          ) : (
+            <>
+              <FiGrid size={18} />
+              <span>Grid View</span>
+            </>
+          )}
+        </button>
         {/* Filter Toggle */}
         <button
           onClick={toggleFilters}
@@ -211,7 +229,7 @@ const Journal = () => {
 
       {/* Entry List */}
       {filteredEntries.length > 0 ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
+        <div className={`mt-6 ${viewMode === 'grid' ? 'grid grid-cols-1 lg:grid-cols-2 gap-4' : 'flex flex-col gap-4'}`}>
           {filteredEntries.map(entry => (
             <EntryCard key={entry.id} entry={entry} onDelete={handleDelete} />
           ))}
