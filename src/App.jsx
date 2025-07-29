@@ -20,7 +20,6 @@ import Settings from './pages/Settings'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import NotFound from './pages/NotFound'
-import TodoList from './pages/ToDoList'
 import MindChat from './pages/MindChat'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
@@ -73,7 +72,6 @@ function App() {
         <Route path="stats" element={<Stats />} />
         <Route path="settings" element={<Settings />} />
         <Route path='mindchat' element={<MindChat/>}/>
-        <Route path="todo" element={<TodoList />} />
       </Route>
       
       {/* 404 route */}

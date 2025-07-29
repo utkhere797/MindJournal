@@ -9,7 +9,6 @@ const MobileMenu = ({ onClose }) => {
     { name: 'Dashboard', path: '/', icon: <FiHome size={20} /> },
     { name: 'Journal', path: '/journal', icon: <FiBook size={20} /> },
     { name: 'Calendar', path: '/calendar', icon: <FiCalendar size={20} /> },
-    { name: 'To-Do List', path: '/todo', icon: <FiCheckCircle size={20} /> },
     { name: 'Insights', path: '/stats', icon: <FiPieChart size={20} /> },
     { name: 'Settings', path: '/settings', icon: <FiSettings size={20} /> }
   ]

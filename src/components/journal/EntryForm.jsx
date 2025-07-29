@@ -6,6 +6,7 @@ import { marked } from "marked";
 import DOMPurify from "dompurify";
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import Modal from '../common/Modal';
+import { useNavigate } from 'react-router-dom';
 
 const moods = [
   { id: 'great', label: 'Epic', icon: <Smile className="text-green-500" size={24} />, color: 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200' },
@@ -43,6 +44,8 @@ const EntryForm = ({ onSubmit, initialData = {} }) => {
     { label: 'Work', icon: <FaBriefcase className="text-yellow-500" /> },
     { label: 'Family', icon: <FaUsers className="text-green-500" /> }
   ];
+
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -203,6 +206,7 @@ const EntryForm = ({ onSubmit, initialData = {} }) => {
 
   const closeEntryForm = () => {
     setIsFormOpen(false);
+    navigate('/journal');
   };
 
   useEffect(() => {
